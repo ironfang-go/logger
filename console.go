@@ -1,14 +1,20 @@
 package logger
 
-import "log"
+import (
+	"log"
+	"os"
+)
 
 type consoleSink struct {
+	output *log.Logger
 }
 
 func (s *consoleSink) Send(format string, v ...any) {
-	log.Printf(format, v...)
+	s.output.Printf(format, v...)
 }
 
 func NewConsoleSink() LogSink {
-	return &consoleSink{}
+	return &consoleSink{
+		output: log.New(os.Stdout, "", log.LstdFlags),
+	}
 }
